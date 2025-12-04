@@ -211,7 +211,7 @@ const TICKET_TEMPLATE = `<!doctype html>
                         <table class="ticket-box" width="100%" cellpadding="0" cellspacing="0" border="0">
                             <tr>
                                 <td class="ticket-info" valign="top" align="center" style="text-align: center;">
-                                    <p><span class="label" style="margin-bottom:24px;">โปรโมชัน • โปรกลุ่ม GangZ</span>
+                                    <p><span class="label" style="margin-bottom:24px;">{{PROMOTION}}</span>
                                     </p>
                                     <p><span class="label">ชื่อผู้เข้าชม</span><strong>{{NAME}}</strong></p>
                                     <p><span class="label">รอบ / วันที่ / เวลา</span><strong>{{ROUND}}
@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Get values
         const name = document.getElementById('visitorName').value;
+        const promotion = document.getElementById('promotionText').value;
         const round = document.getElementById('roundSelect').value;
         const zone = document.getElementById('zoneSelect').value;
         const seat = document.getElementById('seatNumber').value;
@@ -344,6 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Replace placeholders
         let finalHtml = TICKET_TEMPLATE
+            .replace('{{PROMOTION}}', promotion)
             .replace('{{NAME}}', name)
             .replace('{{ROUND}}', round)
             .replace('{{ZONE_SEAT}}', zoneSeat)
