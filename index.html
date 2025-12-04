@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Ticket Generator | ถาปัดการละคอน</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>E-Ticket Generator Atlantis'65</h1>
+            <p>สร้าง E-Ticket สำหรับอีเมลยืนยันการจองบัตร *Staff Only*</p>
+        </header>
+
+        <main>
+            <form id="ticketForm">
+                <!-- 1. Name -->
+                <div class="form-group">
+                    <label for="visitorName">ชื่อผู้เข้าชม</label>
+                    <input type="text" id="visitorName" placeholder="ระบุชื่อผู้เข้าชม" required>
+                </div>
+
+                <!-- 2. Round / Date / Time -->
+                <div class="form-group">
+                    <label for="roundSelect">รอบ / วันที่ / เวลา</label>
+                    <select id="roundSelect" required>
+                        <option value="" disabled selected>เลือกรอบการแสดง</option>
+                        <option value="รอบ 1 | The Atlantis (9 มกราคม 2569: 19:00-22.30 น.)">รอบ 1 | The Atlantis (9
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                        <option value="รอบ 2 | The Atlantis (10 มกราคม 2569: 13:30-17.00 น.)">รอบ 2 | The Atlantis (10
+                            มกราคม 2569: 13:30-17.00 น.)</option>
+                        <option value="รอบ 3 | The Atlantis (10 มกราคม 2569: 19:00-22.30 น.)">รอบ 3 | The Atlantis (10
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                        <option value="รอบ 4 | The Atlantis (11 มกราคม 2569: 13:30-17.00 น.)">รอบ 4 | The Atlantis (11
+                            มกราคม 2569: 13:30-17.00 น.)</option>
+                        <option value="รอบ 5 | The Atlantis (11 มกราคม 2569: 19:00-22.30 น.)">รอบ 5 | The Atlantis (11
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                        <option value="รอบ 6 | The Atlantis (16 มกราคม 2569: 19:00-22.30 น.)">รอบ 6 | The Atlantis (16
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                        <option value="รอบ 7 | The Atlantis (17 มกราคม 2569: 13:30-17.00 น.)">รอบ 7 | The Atlantis (17
+                            มกราคม 2569: 13:30-17.00 น.)</option>
+                        <option value="รอบ 8 | The Atlantis (17 มกราคม 2569: 19:00-22.30 น.)">รอบ 8 | The Atlantis (17
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                        <option value="รอบ 9 | The Atlantis (18 มกราคม 2569: 13:30-17.00 น.)">รอบ 9 | The Atlantis (18
+                            มกราคม 2569: 13:30-17.00 น.)</option>
+                        <option value="รอบ 10 | The Atlantis (18 มกราคม 2569: 19:00-22.30 น.)">รอบ 10 | The Atlantis (18
+                            มกราคม 2569: 19:00-22.30 น.)</option>
+                    </select>
+                </div>
+
+                <!-- 3. Zone & Seat -->
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="zoneSelect">โซนที่นั่ง</label>
+                        <select id="zoneSelect" required>
+                            <option value="" disabled selected>เลือกโซน</option>
+                            <option value="โซน A บัลลังก์ไข่มุก">A บัลลังก์ไข่มุก</option>
+                            <option value="โซน B พระราชวัง">B พระราชวัง</option>
+                            <option value="โซน C ท้องพระโรง">C ท้องพระโรง</option>
+                            <option value="โซน D แนวปะการัง">D แนวปะการัง</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label for="seatNumber">เลขที่นั่ง</label>
+                        <input type="text" id="seatNumber" placeholder="เช่น A1, A2" required>
+                    </div>
+                </div>
+
+                <!-- 4. Google Drive Link -->
+                <div class="form-group">
+                    <label for="driveLink">อัปโหลดลิงก์ Google Drive ตั๋ว</label>
+                    <input type="url" id="driveLink" placeholder="https://drive.google.com/..." required>
+                </div>
+
+                <button type="submit" class="btn-generate">สร้าง E-Ticket 🎫</button>
+            </form>
+
+            <div class="output-section" id="outputSection" style="display: none;">
+                <div class="output-header">
+                    <h2>HTML Code</h2>
+                    <div class="action-buttons">
+                        <button id="previewBtn" class="btn-secondary">Preview</button>
+                        <button id="openWindowBtn" class="btn-secondary">Open in New Window</button>
+                        <button id="copyBtn" class="btn-copy">Copy Code</button>
+                    </div>
+                </div>
+                <textarea id="outputCode" readonly></textarea>
+                <p class="hint">คัดลอกโค้ดด้านบนไปวางในโปรแกรมส่งอีเมลได้เลย</p>
+
+                <div id="previewContainer" class="preview-container" style="display: none;">
+                    <h3>Preview</h3>
+                    <iframe id="previewFrame"></iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
