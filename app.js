@@ -325,6 +325,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update file input text - Removed
 
+    const zoneSelect = document.getElementById('zoneSelect');
+    const subZoneSelect = document.getElementById('subZoneSelect');
+
+    const subZoneData = {
+        'โซน A บัลลังก์ไข่มุก': ['A1', 'A2', 'A3'],
+        'โซน B พระราชวัง': ['B1', 'B2', 'B3', 'B4'],
+        'โซน C ท้องพระโรง': ['C1', 'C2'],
+        'โซน D แนวปะการัง': ['D1', 'D2', 'D3', 'D4']
+    };
+
+    zoneSelect.addEventListener('change', () => {
+        const selectedZone = zoneSelect.value;
+        subZoneSelect.innerHTML = '<option value="" disabled selected>เลือกซับโซน</option>';
+
+        if (selectedZone && subZoneData[selectedZone]) {
+            subZoneSelect.disabled = false;
+            subZoneData[selectedZone].forEach(sub => {
+                const option = document.createElement('option');
+                option.value = sub;
+                option.textContent = sub;
+                subZoneSelect.appendChild(option);
+            });
+        } else {
+            subZoneSelect.disabled = true;
+        }
+    });
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -333,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const promotion = document.getElementById('promotionText').value;
         const round = document.getElementById('roundSelect').value;
         const zone = document.getElementById('zoneSelect').value;
+        const subZone = document.getElementById('subZoneSelect').value;
         const seat = document.getElementById('seatNumber').value;
         const driveLink = document.getElementById('driveLink').value;
 
@@ -342,7 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Prepare replacements
-        const zoneSeat = `${zone} — ที่นั่ง ${seat}`;
+        // Example: โซน A บัลลังก์ไข่มุก (A1) — ที่นั่ง A12
+        const zoneSeat = `${zone} (${subZone}) — ที่นั่ง ${seat}`;
 
         // Replace placeholders
         let finalHtml = TICKET_TEMPLATE
