@@ -95,21 +95,27 @@
             </form>
 
             <div class="output-section" id="outputSection" style="display: none;">
+
+                <!-- Preview Section (Moved to top) -->
+                <div id="previewContainer" class="preview-container" style="display: none;">
+                    <div class="preview-header">
+                        <h3>Preview</h3>
+                        <button id="openWindowBtn" class="btn-secondary">Open in New Window ↗</button>
+                    </div>
+                    <iframe id="previewFrame"></iframe>
+                </div>
+
+                <!-- HTML Code Section -->
                 <div class="output-header">
                     <h2>HTML Code</h2>
                     <div class="action-buttons">
-                        <button id="previewBtn" class="btn-secondary">Preview</button>
-                        <button id="openWindowBtn" class="btn-secondary">Open in New Window</button>
+                        <button id="previewBtn" class="btn-secondary" style="display: none;">Refresh Preview</button>
+                        <!-- Hidden as it's auto-generated, or strictly for refresh -->
                         <button id="copyBtn" class="btn-copy">Copy Code</button>
                     </div>
                 </div>
                 <textarea id="outputCode" readonly></textarea>
                 <p class="hint">คัดลอกโค้ดด้านบนไปวางในโปรแกรมส่งอีเมลได้เลย</p>
-
-                <div id="previewContainer" class="preview-container" style="display: none;">
-                    <h3>Preview</h3>
-                    <iframe id="previewFrame"></iframe>
-                </div>
             </div>
         </main>
     </div>

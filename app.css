@@ -238,15 +238,23 @@ textarea {
 
 /* Preview Section */
 .preview-container {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
+    margin-bottom: 30px;
+    /* Space between preview and code */
+    /* Removed top border and margin as it's now first */
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .preview-container h3 {
-    font-size: 16px;
+    font-size: 18px;
+    /* Matched to h2 */
     color: #0b3d91;
-    margin-bottom: 10px;
+    margin: 0;
 }
 
 #previewFrame {
