@@ -195,6 +195,9 @@ const TICKET_TEMPLATE = `<!doctype html>
                         <h1>Your E-Ticket for ถาปัดการละคอนครั้งที่65 The Atlantis</h1>
                         <div class="sub">ยืนยันการซื้อบัตรรับชมการแสดง</div>
                     </div>
+                    <div>
+                        <img src="https://ik.imagekit.io/atlantis65/atlantis65.jpg?updatedAt=1764923398618" alt="lakorntapad65" class="banner-img">
+                    </div>
                     
 
                     <!-- Body -->
