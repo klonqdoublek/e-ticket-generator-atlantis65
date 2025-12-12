@@ -224,7 +224,7 @@ const TICKET_TEMPLATE = `<!doctype html>
 
                         <!-- Download Link Section -->
                         <div style="text-align: center; margin-top: 20px; padding: 15px; background-color: #f0f7ff; border-radius: 8px; border: 1px solid #dbe9ff;">
-                            <p style="margin: 0 0 10px 0; font-size: 14px; color: #0b3d91;"><strong> E-Ticket ของคุณ :</strong></p>
+                            <p style="margin: 0 0 10px 0; font-size: 14px; color: #0b3d91;"><strong> 🎟️ E-Ticket ของคุณ :</strong></p>
                             <a href="{{DOWNLOAD_URL}}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket</span></a>
                         </div>
 
