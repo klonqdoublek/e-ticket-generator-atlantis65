@@ -202,7 +202,7 @@ const TICKET_TEMPLATE = `<!doctype html>
 
                     <!-- Body -->
                     <div class="body">
-                        <p class="event-title">🫧 E-Ticket Confirmation 🫧</p>
+                        <p class="event-title">🎫 E-Ticket Confirmation 🎫</p>
                         <p class="meta">ขอบคุณสำหรับการสนับสนุนละคอนถาปัดในปีนี้
                             <br> โปรดแสดงอีเมลฉบับนี้ที่หน้างานเพื่อแลกรับบัตรแข็งเข้าชมการแสดง
                         </p>
