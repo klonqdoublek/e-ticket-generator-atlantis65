@@ -146,12 +146,12 @@ input[type="file"] {
 /* Buttons */
 .btn-generate {
     width: 100%;
-    padding: 14px;
+    padding: 18px;
     background: #0b3d91;
     color: #fff;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 18px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s;
