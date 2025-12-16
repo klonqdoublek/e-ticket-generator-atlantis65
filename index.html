@@ -88,7 +88,15 @@
                 <!-- 4. Google Drive Link -->
                 <div class="form-group">
                     <label for="driveLink">อัปโหลดลิงก์ Google Drive ตั๋ว</label>
-                    <input type="url" id="driveLink" placeholder="https://drive.google.com/..." required>
+                    <div id="linkContainer">
+                        <div class="link-row" style="margin-bottom: 10px; display: flex; gap: 10px;">
+                            <span class="link-number"
+                                style="padding-top: 14px; font-weight: bold; color: #0b3d91;">1.</span>
+                            <input type="url" name="driveLink" placeholder="https://drive.google.com/..." required>
+                        </div>
+                    </div>
+                    <button type="button" id="addLinkBtn" class="btn-secondary"
+                        style="margin-top: 5px; width: 100%; margin-bottom: 15px;">+ เพิ่มลิงก์อื่น</button>
                 </div>
 
                 <button type="submit" class="btn-generate">สร้าง E-Ticket 🎫</button>

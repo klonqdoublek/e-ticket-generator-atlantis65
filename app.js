@@ -225,7 +225,7 @@ const TICKET_TEMPLATE = `<!doctype html>
                         <!-- Download Link Section -->
                         <div style="text-align: center; margin-top: 20px; padding: 15px; background-color: #f0f7ff; border-radius: 8px; border: 1px solid #dbe9ff;">
                             <p style="margin: 0 0 10px 0; font-size: 14px; color: #0b3d91;"><strong> 🎟️ E-Ticket ของคุณ :</strong></p>
-                            <a href="{{DOWNLOAD_URL}}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket</span></a>
+                            {{DOWNLOAD_SECTION}}
                         </div>
 
                         <!-- Additional instructions -->
@@ -352,6 +352,115 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const linkContainer = document.getElementById('linkContainer');
+    const addLinkBtn = document.getElementById('addLinkBtn');
+
+    function updateLinkNumbers() {
+        const rows = linkContainer.querySelectorAll('.link-row');
+        rows.forEach((row, index) => {
+            const numberSpan = row.querySelector('.link-number');
+            if (numberSpan) {
+                numberSpan.textContent = `${index + 1}.`;
+            }
+        });
+    }
+
+    // Add new link input
+    addLinkBtn.addEventListener('click', () => {
+        const linkRow = document.createElement('div');
+        linkRow.className = 'link-row';
+        linkRow.style.marginBottom = '10px';
+        linkRow.style.display = 'flex';
+        linkRow.style.gap = '10px';
+
+        const numberSpan = document.createElement('span');
+        numberSpan.className = 'link-number';
+        numberSpan.style.paddingTop = '14px';
+        numberSpan.style.fontWeight = 'bold';
+        numberSpan.style.color = '#0b3d91';
+        numberSpan.textContent = '0.'; // Will be updated immediately
+
+        const input = document.createElement('input');
+        input.type = 'url';
+        input.name = 'driveLink'; // use same name to collect later
+        input.placeholder = 'https://drive.google.com/...';
+        input.required = true;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'ลบ';
+        removeBtn.className = 'btn-secondary';
+        removeBtn.style.padding = '10px';
+        removeBtn.style.color = 'red';
+        removeBtn.style.borderColor = 'red';
+
+        removeBtn.addEventListener('click', () => {
+            linkContainer.removeChild(linkRow);
+            updateLinkNumbers();
+        });
+
+        linkRow.appendChild(numberSpan);
+        linkRow.appendChild(input);
+        linkRow.appendChild(removeBtn);
+        linkContainer.appendChild(linkRow);
+
+        updateLinkNumbers();
+        validateForm(); // Validate after adding
+    });
+
+    // Validation Logic
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    function validateForm() {
+        const name = document.getElementById('visitorName').value.trim();
+        const round = document.getElementById('roundSelect').value;
+        const zone = document.getElementById('zoneSelect').value;
+        const subZoneSelect = document.getElementById('subZoneSelect');
+        const seat = document.getElementById('seatNumber').value.trim();
+
+        let subZoneValid = true;
+        if (!subZoneSelect.disabled) {
+            subZoneValid = subZoneSelect.value !== '';
+        }
+
+        // Check links
+        const linkInputs = document.querySelectorAll('input[name="driveLink"]');
+        let hasLink = false;
+        linkInputs.forEach(input => {
+            if (input.value.trim() !== '') {
+                hasLink = true;
+            }
+        });
+
+        if (name && round && zone && subZoneValid && seat && hasLink) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    // Attach listeners for validation
+    document.getElementById('visitorName').addEventListener('input', validateForm);
+    document.getElementById('roundSelect').addEventListener('change', validateForm);
+    document.getElementById('zoneSelect').addEventListener('change', () => {
+        // zone change triggers subzone change logic which is async in event loop
+        // but synchronous in execution. Wait for subZone population?
+        // Actually the subzone population runs on change, so we run validation after.
+        setTimeout(validateForm, 0);
+    });
+    document.getElementById('subZoneSelect').addEventListener('change', validateForm);
+    document.getElementById('seatNumber').addEventListener('input', validateForm);
+
+    // Delegate input listener for dynamic links
+    linkContainer.addEventListener('input', (e) => {
+        if (e.target.name === 'driveLink') {
+            validateForm();
+        }
+    });
+
+    // Initial check
+    validateForm();
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -362,11 +471,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const zone = document.getElementById('zoneSelect').value;
         const subZone = document.getElementById('subZoneSelect').value;
         const seat = document.getElementById('seatNumber').value;
-        const driveLink = document.getElementById('driveLink').value;
 
-        if (!driveLink) {
-            alert('กรุณาระบุลิงก์ Google Drive');
+        // Collect all links
+        const linkInputs = document.querySelectorAll('input[name="driveLink"]');
+        const links = [];
+        linkInputs.forEach(input => {
+            if (input.value.trim()) {
+                links.push(input.value.trim());
+            }
+        });
+
+        if (links.length === 0) {
+            alert('กรุณาระบุลิงก์ Google Drive อย่างน้อย 1 ลิงก์');
             return;
+        }
+
+        // Generate download section HTML
+        let downloadSectionHtml = '';
+        if (links.length === 1) {
+            downloadSectionHtml = `<a href="${links[0]}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket</span></a>`;
+        } else {
+            // Multiple links
+            downloadSectionHtml = '<div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">';
+            links.forEach((link, index) => {
+                downloadSectionHtml += `<a href="${link}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px; width: 220px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket ${index + 1}</span></a>`;
+            });
+            downloadSectionHtml += '</div>';
         }
 
         // Prepare replacements
@@ -379,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace('{{NAME}}', name)
             .replace('{{ROUND}}', round)
             .replace('{{ZONE_SEAT}}', zoneSeat)
-            .replace('{{DOWNLOAD_URL}}', driveLink);
+            .replace('{{DOWNLOAD_SECTION}}', downloadSectionHtml);
 
         // Output result
         outputCode.value = finalHtml;
