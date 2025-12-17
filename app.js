@@ -458,6 +458,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Reset Button Logic
+    const resetBtn = document.getElementById('resetBtn');
+    resetBtn.addEventListener('click', () => {
+        // Reset form fields
+        form.reset();
+
+        // Reset subzone dropdown
+        subZoneSelect.disabled = true;
+        subZoneSelect.innerHTML = '<option value="" disabled selected>เลือกซับโซน</option>';
+
+        // Reset dynamic link inputs (keep only one)
+        linkContainer.innerHTML = ''; // prevent accumulation
+        // Re-create initial input
+        const linkRow = document.createElement('div');
+        linkRow.className = 'link-row';
+        linkRow.style.marginBottom = '10px';
+        linkRow.style.display = 'flex';
+        linkRow.style.gap = '10px';
+
+        const numberSpan = document.createElement('span');
+        numberSpan.className = 'link-number';
+        numberSpan.style.paddingTop = '14px';
+        numberSpan.style.fontWeight = 'bold';
+        numberSpan.style.color = '#0b3d91';
+        numberSpan.textContent = '1.';
+
+        const input = document.createElement('input');
+        input.type = 'url';
+        input.name = 'driveLink';
+        input.placeholder = 'https://drive.google.com/...';
+        input.required = true;
+
+        linkRow.appendChild(numberSpan);
+        linkRow.appendChild(input);
+        linkContainer.appendChild(linkRow);
+
+        // Hide output sections
+        outputSection.style.display = 'none';
+        previewContainer.style.display = 'none';
+        outputCode.value = '';
+
+        // Validate to update button state (should be disabled)
+        validateForm();
+    });
+
     // Initial check
     validateForm();
 

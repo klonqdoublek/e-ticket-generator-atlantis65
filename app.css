@@ -34,6 +34,8 @@ header {
     padding: 30px 20px;
     text-align: center;
     border-bottom: 4px solid #062a66;
+    position: relative;
+    /* For absolute positioning of reset btn */
 }
 
 header h1 {
@@ -44,6 +46,30 @@ header h1 {
 header p {
     font-size: 14px;
     color: #cfe1ff;
+}
+
+/* ... */
+
+.btn-reset {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 main {
@@ -167,6 +193,8 @@ input[type="file"] {
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+
 
 /* Output Section */
 .output-section {
