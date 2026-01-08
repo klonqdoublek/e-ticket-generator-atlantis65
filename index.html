@@ -93,8 +93,25 @@
                     </div>
                 </div>
 
-                <!-- 4. Google Drive Link -->
+                <!-- 4. Ticket Type Selection -->
                 <div class="form-group">
+                    <label>รูปแบบตั๋ว (Ticket Type)</label>
+                    <div class="radio-group" style="display: flex; gap: 24px; margin-bottom: 8px;">
+                        <label
+                            style="font-weight: normal; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="ticketType" value="link" checked>
+                            Google Drive Link
+                        </label>
+                        <label
+                            style="font-weight: normal; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="ticketType" value="image">
+                            QR-Code Image
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 4.1 Google Drive Link Section -->
+                <div class="form-group" id="linkSection">
                     <label for="driveLink">อัปโหลดลิงก์ Google Drive ตั๋ว</label>
                     <div id="linkContainer">
                         <div class="link-row" style="margin-bottom: 10px; display: flex; gap: 10px;">
@@ -106,6 +123,16 @@
                     <button type="button" id="addLinkBtn" class="btn-secondary"
                         style="margin-top: 5px; width: 100%; height: 40px; margin-bottom: 8px;">+
                         เพิ่มลิงก์อื่น</button>
+                </div>
+
+                <!-- 4.2 Image Upload Section -->
+                <div class="form-group" id="imageSection" style="display: none;">
+                    <label for="qrImage">อัปโหลดรูปภาพ QR-Code</label>
+                    <div
+                        style="border: 2px dashed #dbe9ff; border-radius: 8px; padding: 20px; text-align: center; background: #fbfeff;">
+                        <input type="file" id="qrImage" accept="image/*" style="margin-bottom: 8px; max-width: 100%;">
+                        <p class="hint" style="font-size: 13px; color: #6b7b99; margin: 0;">รองรับไฟล์ .jpg, .png</p>
+                    </div>
                 </div>
                 <hr>
                 <button type="submit" class="btn-generate" style="margin-top: 24px;">สร้าง E-Ticket

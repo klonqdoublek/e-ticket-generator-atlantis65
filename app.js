@@ -323,6 +323,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewContainer = document.getElementById('previewContainer');
     const previewFrame = document.getElementById('previewFrame');
 
+    // Ticket Type Toggle Logic
+    const ticketTypeRadios = document.querySelectorAll('input[name="ticketType"]');
+    const linkSection = document.getElementById('linkSection');
+    const imageSection = document.getElementById('imageSection');
+    const qrImageInput = document.getElementById('qrImage');
+
+    function updateTicketTypeVisibility() {
+        const selectedType = document.querySelector('input[name="ticketType"]:checked').value;
+        const linkInputs = document.querySelectorAll('input[name="driveLink"]');
+
+        if (selectedType === 'link') {
+            linkSection.style.display = 'block';
+            imageSection.style.display = 'none';
+            // Enable required for links
+            linkInputs.forEach(input => input.setAttribute('required', ''));
+        } else {
+            linkSection.style.display = 'none';
+            imageSection.style.display = 'block';
+            // Disable required for links so form can submit
+            linkInputs.forEach(input => input.removeAttribute('required'));
+        }
+        validateForm();
+    }
+
+    ticketTypeRadios.forEach(radio => {
+        radio.addEventListener('change', updateTicketTypeVisibility);
+    });
+
+    qrImageInput.addEventListener('change', validateForm);
+
     // Update file input text - Removed
 
     const zoneSelect = document.getElementById('zoneSelect');
@@ -423,16 +453,25 @@ document.addEventListener('DOMContentLoaded', () => {
             subZoneValid = subZoneSelect.value !== '';
         }
 
-        // Check links
-        const linkInputs = document.querySelectorAll('input[name="driveLink"]');
-        let hasLink = false;
-        linkInputs.forEach(input => {
-            if (input.value.trim() !== '') {
-                hasLink = true;
-            }
-        });
+        // Check ticket validation based on type
+        const selectedType = document.querySelector('input[name="ticketType"]:checked').value;
+        let methodValid = false;
 
-        if (name && round && zone && subZoneValid && seat && hasLink) {
+        if (selectedType === 'link') {
+            const linkInputs = document.querySelectorAll('input[name="driveLink"]');
+            linkInputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    methodValid = true;
+                }
+            });
+        } else {
+            // Image mode
+            if (qrImageInput.files.length > 0) {
+                methodValid = true;
+            }
+        }
+
+        if (name && round && zone && subZoneValid && seat && methodValid) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
@@ -467,6 +506,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset subzone dropdown
         subZoneSelect.disabled = true;
         subZoneSelect.innerHTML = '<option value="" disabled selected>เลือกซับโซน</option>';
+
+        // Reset ticket type
+        document.querySelector('input[name="ticketType"][value="link"]').checked = true;
+        updateTicketTypeVisibility();
+        qrImageInput.value = '';
 
         // Reset dynamic link inputs (keep only one)
         linkContainer.innerHTML = ''; // prevent accumulation
@@ -517,58 +561,76 @@ document.addEventListener('DOMContentLoaded', () => {
         const subZone = document.getElementById('subZoneSelect').value;
         const seat = document.getElementById('seatNumber').value;
 
-        // Collect all links
-        const linkInputs = document.querySelectorAll('input[name="driveLink"]');
-        const links = [];
-        linkInputs.forEach(input => {
-            if (input.value.trim()) {
-                links.push(input.value.trim());
-            }
-        });
-
-        if (links.length === 0) {
-            alert('กรุณาระบุลิงก์ Google Drive อย่างน้อย 1 ลิงก์');
-            return;
-        }
-
-        // Generate download section HTML
+        const selectedType = document.querySelector('input[name="ticketType"]:checked').value;
         let downloadSectionHtml = '';
-        if (links.length === 1) {
-            downloadSectionHtml = `<a href="${links[0]}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket</span></a>`;
-        } else {
-            // Multiple links
-            downloadSectionHtml = '<div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">';
-            links.forEach((link, index) => {
-                downloadSectionHtml += `<a href="${link}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px; width: 220px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket ${index + 1}</span></a>`;
+
+        if (selectedType === 'link') {
+            // Collect all links
+            const linkInputs = document.querySelectorAll('input[name="driveLink"]');
+            const links = [];
+            linkInputs.forEach(input => {
+                if (input.value.trim()) {
+                    links.push(input.value.trim());
+                }
             });
-            downloadSectionHtml += '</div>';
+
+            if (links.length === 0) {
+                alert('กรุณาระบุลิงก์ Google Drive อย่างน้อย 1 ลิงก์');
+                return;
+            }
+
+            if (links.length === 1) {
+                downloadSectionHtml = `<a href="${links[0]}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket</span></a>`;
+            } else {
+                downloadSectionHtml = '<div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">';
+                links.forEach((link, index) => {
+                    downloadSectionHtml += `<a href="${link}" target="_blank" style="display: inline-block; background: #0b3d91; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; line-height: 20px; width: 220px;"><img src="https://img.icons8.com/ios-filled/50/ffffff/download.png" alt="Download" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0; display: inline-block;"><span style="vertical-align: middle;">ดาวน์โหลด E-Ticket ${index + 1}</span></a>`;
+                });
+                downloadSectionHtml += '</div>';
+            }
+            generateTicket(downloadSectionHtml);
+
+        } else {
+            // Image Mode
+            const file = qrImageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const dataUrl = e.target.result;
+                    // Embed Image with optimized size
+                    downloadSectionHtml = `<div style="text-align: center; padding: 20px 0;"><img src="${dataUrl}" alt="E-Ticket QR" style="width: 80%; max-width: 300px; height: auto; display: inline-block; border: 1px solid #e6f0ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(11, 61, 145, 0.1);"></div>`;
+                    generateTicket(downloadSectionHtml);
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
-        // Prepare replacements
-        // Example: โซน A บัลลังก์ไข่มุก (A1) — ที่นั่ง A12
-        const zoneSeat = `${zone} (${subZone}) — ที่นั่ง ${seat}`;
+        function generateTicket(downloadHtml) {
+            // Prepare replacements
+            const zoneSeat = `${zone} (${subZone}) — ที่นั่ง ${seat}`;
 
-        // Replace placeholders
-        let finalHtml = TICKET_TEMPLATE
-            .replace('{{PROMOTION}}', promotion)
-            .replace('{{NAME}}', name)
-            .replace('{{ROUND}}', round)
-            .replace('{{ZONE_SEAT}}', zoneSeat)
-            .replace('{{DOWNLOAD_SECTION}}', downloadSectionHtml);
+            // Replace placeholders
+            let finalHtml = TICKET_TEMPLATE
+                .replace('{{PROMOTION}}', promotion)
+                .replace('{{NAME}}', name)
+                .replace('{{ROUND}}', round)
+                .replace('{{ZONE_SEAT}}', zoneSeat)
+                .replace('{{DOWNLOAD_SECTION}}', downloadHtml);
 
-        // Output result
-        outputCode.value = finalHtml;
-        outputSection.style.display = 'block';
+            // Output result
+            outputCode.value = finalHtml;
+            outputSection.style.display = 'block';
 
-        // Auto-preview
-        previewContainer.style.display = 'block';
-        const doc = previewFrame.contentWindow.document;
-        doc.open();
-        doc.write(finalHtml);
-        doc.close();
+            // Auto-preview
+            previewContainer.style.display = 'block';
+            const doc = previewFrame.contentWindow.document;
+            doc.open();
+            doc.write(finalHtml);
+            doc.close();
 
-        // Scroll to output
-        outputSection.scrollIntoView({ behavior: 'smooth' });
+            // Scroll to output
+            outputSection.scrollIntoView({ behavior: 'smooth' });
+        }
     });
 
     // Preview Button
