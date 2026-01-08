@@ -597,8 +597,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const dataUrl = e.target.result;
-                    // Embed Image with optimized size
-                    downloadSectionHtml = `<div style="text-align: center; padding: 20px 0;"><img src="${dataUrl}" alt="E-Ticket QR" style="width: 80%; max-width: 300px; height: auto; display: inline-block; border: 1px solid #e6f0ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(11, 61, 145, 0.1);"></div>`;
+                    // Embed Image with optimized size and email compatibility
+                    // Gmail fix 2: Wrap in a fixed-width table. This is the most robust way for email clients.
+                    downloadSectionHtml = `
+                        <table align="center" width="200" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto; width: 200px;">
+                            <tr>
+                                <td align="center" style="padding: 20px 0;">
+                                    <img src="${dataUrl}" width="200" alt="E-Ticket QR" style="display: block; width: 100%; max-width: 200px; height: auto; border: 1px solid #e6f0ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(11, 61, 145, 0.1);">
+                                </td>
+                            </tr>
+                        </table>`;
                     generateTicket(downloadSectionHtml);
                 };
                 reader.readAsDataURL(file);
