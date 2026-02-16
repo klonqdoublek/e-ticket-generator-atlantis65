@@ -14,9 +14,7 @@ The E-Ticket Generator is a web application that allows users to create, manage,
 
 ## Technology Stack
 - **Frontend**: HTML, CSS, JavaScript (React.js)
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Payment Processing**: Stripe, PayPal
+- **Backend**: Node.js
 
 ## Getting Started
 1. Clone the repository:
