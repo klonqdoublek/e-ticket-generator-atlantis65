@@ -2,7 +2,15 @@
 👩🏻‍💻👉 https://e-ticket-generator-atlantis65.vercel.app/
 
 ## Overview
-The E-Ticket Generator is a web application that allows users to create, manage, and distribute electronic tickets for 'Tapadkarnlakorn'65'. It's designed for staffs who need to create tickets for upcoming events and attendees who need a hassle-free way to receive and store their tickets.
+The E-Ticket Generator is a web application that allows users to create, manage, and distribute electronic tickets for 'Tapadkarnlakorn'65'. It's designed for staffs who need to create E-tickets for sending via Email.
+
+# Features
+- **Staff-Only Access**: Secure access for staff members to manage events.
+- **Event Information**: Comprehensive details about upcoming events.
+- **Seating & Zone**: Information about seating arrangements and venue locations.
+- **Ticket Type Selection**: Choose ticket types, including options for Google Drive link and QR code images.
+- **Multiple Google Drive Link Support**: Ability to support numerous Google Drive links for ticket access.
+- **E-Ticket Generation**: Fast and efficient generation of e-tickets for customers.
 
 ## Technology Stack
 - **Frontend**: HTML, CSS, JavaScript (React.js)
